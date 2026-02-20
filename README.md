@@ -11,8 +11,9 @@ Notion `Study Schedule` 데이터소스에 백준 문제를 주간 자동 등록
 ## 빠른 시작 (10분)
 1. GitHub에서 이 저장소를 `Use this template`으로 복제합니다.
 2. Notion에서 내부 통합(Internal Integration)을 생성합니다.
-3. Notion 템플릿 구조를 본인 워크스페이스에 만듭니다.
-   - 스키마 가이드: `docs/notion-template-setup.md`
+3. 아래 Notion 템플릿을 본인 워크스페이스로 `Duplicate`합니다.
+   - 템플릿 링크: [Algorithm Study 템플릿](https://chalk-sociology-0dc.notion.site/Algorithm-Study-30d06739c57181fe81d7f2843d560f1c?pvs=73)
+   - 스키마 수정이 필요하면: `docs/notion-template-setup.md`
 4. 통합을 아래 두 데이터소스에 공유합니다.
    - `Study Schedule`
    - `플랫폼` (백준/프로그래머스 등이 있는 데이터소스)
