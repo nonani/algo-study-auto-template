@@ -1,0 +1,52 @@
+name: Weekly Baekjoon To Notion
+
+on:
+  schedule:
+    # Sunday 00:00 KST == Saturday 15:00 UTC
+    - cron: "0 15 * * 6"
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: "Override target date in KST (YYYY-MM-DD)"
+        required: false
+        type: string
+      dry_run:
+        description: "When true, do not write to Notion"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  sync-baekjoon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Insert weekly Baekjoon problems
+        run: npm run run
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID }}
+          NOTION_DATA_SOURCE_ID: ${{ vars.NOTION_DATA_SOURCE_ID }}
+          NOTION_BAEKJOON_PAGE_ID: ${{ vars.NOTION_BAEKJOON_PAGE_ID }}
+          NOTION_TITLE_PROPERTY: ${{ vars.NOTION_TITLE_PROPERTY }}
+          NOTION_DATE_PROPERTY: ${{ vars.NOTION_DATE_PROPERTY }}
+          NOTION_PLATFORM_PROPERTY: ${{ vars.NOTION_PLATFORM_PROPERTY }}
+          NOTION_LEVEL_PROPERTY: ${{ vars.NOTION_LEVEL_PROPERTY }}
+          NOTION_URL_PROPERTY: ${{ vars.NOTION_URL_PROPERTY }}
+          NOTION_MEMBER_CHECKBOX_PROPERTIES: ${{ vars.NOTION_MEMBER_CHECKBOX_PROPERTIES }}
+          SOLVEDAC_QUERY: ${{ vars.SOLVEDAC_QUERY }}
+          PROBLEM_COUNT: ${{ vars.PROBLEM_COUNT }}
+          TARGET_DATE: ${{ inputs.target_date }}
+          DRY_RUN: ${{ inputs.dry_run }}

@@ -1,0 +1,13 @@
+{
+  "name": "algo-study-auto-template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "run": "node scripts/notion-weekly-baekjoon.mjs",
+    "test": "node --test"
+  }
+}
