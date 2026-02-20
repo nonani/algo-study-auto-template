@@ -50,12 +50,28 @@
 - `Could not find database`
 
 ## 5) ID 추출 방법
-Notion URL에서 32자리 ID(하이픈 없는 문자열)를 그대로 사용해도 됩니다.
-스크립트가 내부에서 하이픈 형태 UUID로 자동 변환합니다.
+### 5-1) `NOTION_BAEKJOON_PAGE_ID`
+- `플랫폼` 데이터소스의 `백준` 페이지를 열고 URL의 32자리 ID를 복사합니다.
 
-예시 URL:
+### 5-2) `NOTION_DATABASE_ID`
+- `Study Schedule` 화면 URL의 32자리 ID를 복사해 사용해도 됩니다.
+- 하이픈 없는 32자리 문자열 그대로 넣어도 스크립트가 자동 변환합니다.
+
+예시:
 - `https://www.notion.so/<32자리ID>?v=...`
 
-사용 위치:
-- `NOTION_DATA_SOURCE_ID` 또는 `NOTION_DATABASE_ID`
-- `NOTION_BAEKJOON_PAGE_ID`
+### 5-3) `NOTION_DATA_SOURCE_ID` 정확히 찾기
+`NOTION_DATA_SOURCE_ID`는 아래 API 호출로 정확히 확인할 수 있습니다.
+
+```bash
+export NOTION_TOKEN='ntn_xxx'
+export NOTION_DATABASE_ID='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+curl -sS "https://api.notion.com/v1/databases/${NOTION_DATABASE_ID}" \
+  -H "Authorization: Bearer ${NOTION_TOKEN}" \
+  -H "Notion-Version: 2025-09-03" \
+  | jq -r '.data_sources[0].id'
+```
+
+- 출력값을 GitHub Variable `NOTION_DATA_SOURCE_ID`에 넣으면 됩니다.
+- 또는 `NOTION_DATABASE_ID`만 설정해도 현재 템플릿 스크립트는 동작합니다.

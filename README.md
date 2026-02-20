@@ -48,6 +48,22 @@ Notion `Study Schedule`에 백준 문제를 자동 등록하는 GitHub Actions �
 - `SOLVEDAC_QUERY` (선택, 기본 `*g5..g2 s#1000..`)
 - `PROBLEM_COUNT` (선택, 기본 `10`)
 
+`NOTION_DATA_SOURCE_ID`를 모르겠다면:
+1. 가장 쉬운 방법: `NOTION_DATABASE_ID`만 넣고 `NOTION_DATA_SOURCE_ID`는 비워둡니다.
+2. 정확히 찾는 방법(API):
+
+```bash
+export NOTION_TOKEN='ntn_xxx'
+export NOTION_DATABASE_ID='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+curl -sS "https://api.notion.com/v1/databases/${NOTION_DATABASE_ID}" \
+  -H "Authorization: Bearer ${NOTION_TOKEN}" \
+  -H "Notion-Version: 2025-09-03" \
+  | jq -r '.data_sources[0].id'
+```
+
+출력된 값을 GitHub Variable `NOTION_DATA_SOURCE_ID`에 넣으면 됩니다.
+
 아래는 선택값이며 기본값으로도 동작합니다.
 - `NOTION_TITLE_PROPERTY` (기본 `문제`)
 - `NOTION_DATE_PROPERTY` (기본 `날짜`)
