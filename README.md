@@ -2,8 +2,6 @@
 
 Notion `Study Schedule`에 백준 문제를 자동 등록하는 GitHub Actions 템플릿입니다.
 
-![GitHub 템플릿 개요](docs/assets/github-repo-overview.png)
-
 ## 이 템플릿이 하는 일
 - solved.ac 검색 조건으로 문제를 랜덤 추출합니다.
 - 매주 10문제를 Notion에 자동 등록합니다.
@@ -65,8 +63,6 @@ Notion `Study Schedule`에 백준 문제를 자동 등록하는 GitHub Actions �
 2. `target_date`는 비워두면 이번 주 일요일(KST)로 자동 계산
 3. `dry_run`을 체크하면 Notion에 쓰지 않고 미리보기만 수행
 4. 성공 로그 확인 후 Notion에서 행 생성 확인
-
-![워크플로 설정 파일](docs/assets/github-workflow-file.png)
 
 ## 6. 자동 실행 스케줄
 - 워크플로: `.github/workflows/notion-weekly-baekjoon.yml`
