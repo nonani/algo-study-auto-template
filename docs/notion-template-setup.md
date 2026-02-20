@@ -51,7 +51,35 @@
 
 ## 5) ID 추출 방법
 ### 5-1) `NOTION_BAEKJOON_PAGE_ID`
-- `플랫폼` 데이터소스의 `백준` 페이지를 열고 URL의 32자리 ID를 복사합니다.
+- 가장 쉬운 방법:
+  - `플랫폼` 데이터소스의 `백준` 페이지를 열고 URL의 32자리 ID를 복사합니다.
+- API로 정확히 찾는 방법:
+  - 먼저 `플랫폼` 데이터소스 ID를 준비합니다.
+    - 이미 알고 있으면 `NOTION_PLATFORM_DATA_SOURCE_ID`로 사용
+    - 모르면 `플랫폼` 데이터베이스 ID로 아래처럼 조회
+
+```bash
+export NOTION_TOKEN='ntn_xxx'
+export NOTION_PLATFORM_DATABASE_ID='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+export NOTION_PLATFORM_DATA_SOURCE_ID=$(
+  curl -sS "https://api.notion.com/v1/databases/${NOTION_PLATFORM_DATABASE_ID}" \
+    -H "Authorization: Bearer ${NOTION_TOKEN}" \
+    -H "Notion-Version: 2025-09-03" \
+    | jq -r '.data_sources[0].id'
+)
+```
+
+```bash
+curl -sS -X POST "https://api.notion.com/v1/data_sources/${NOTION_PLATFORM_DATA_SOURCE_ID}/query" \
+  -H "Authorization: Bearer ${NOTION_TOKEN}" \
+  -H "Notion-Version: 2025-09-03" \
+  -H "Content-Type: application/json" \
+  -d '{"page_size":100}' \
+  | jq -r '.results[] | [.id, (.properties | to_entries[] | select(.value.type=="title") | .value.title | map(.plain_text) | join(""))] | @tsv'
+```
+
+- 출력에서 제목이 `백준`인 행의 첫 번째 컬럼(ID)을 `NOTION_BAEKJOON_PAGE_ID`로 넣으면 됩니다.
 
 ### 5-2) `NOTION_DATABASE_ID`
 - `Study Schedule` 화면 URL의 32자리 ID를 복사해 사용해도 됩니다.
